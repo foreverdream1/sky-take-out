@@ -56,4 +56,15 @@ public interface EmployeeMapper {
      */
     @Select("select * from employee where id =#{id}")
     Employee getById(Long id);
+
+    /**
+     * 根据 openid 查询员工
+     */
+    @Select("select * from employee where openid = #{openid}")
+    Employee getByOpenid(String openid);
+
+    /**
+     * 微信登录时插入员工（包含 openid）
+     */
+    void insertWithOpenid(Employee employee);
 }

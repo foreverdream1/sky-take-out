@@ -12,23 +12,36 @@ import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
+import com.sky.exception.LoginFailedException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.properties.JwtProperties;
+import com.sky.properties.WeChatProperties;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.EmployeeService;
+import com.sky.utils.HttpClientUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private WeChatProperties weChatProperties;
+
+    private static final String WX_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";
 
     /**
      * 员工登录
@@ -64,6 +77,54 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         //3、返回实体对象
+        return employee;
+    }
+
+    /**
+     * 员工微信登录
+     * 流程：code → 微信接口换 openid → 查 employee 表 → 新用户自动注册 → 返回 Employee
+     */
+    @Override
+    public Employee wxLogin(String code) {
+        log.info("员工微信登录 code: {}", code);
+
+        // ① 调用微信接口，用 code 换 openid
+        Map<String, String> paramMap = new HashMap<>();
+        paramMap.put("appid", weChatProperties.getAppid());
+        paramMap.put("secret", weChatProperties.getSecret());
+        paramMap.put("js_code", code);
+        paramMap.put("grant_type", "authorization_code");
+
+        String result = HttpClientUtil.doGet(WX_LOGIN_URL, paramMap);
+        log.info("微信接口返回: {}", result);
+
+        // ② 解析 openid
+        com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(result);
+        if (json == null || json.getInteger("errcode") != null) {
+            log.error("微信接口调用失败: {}", json);
+            throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
+        }
+        String openid = json.getString("openid");
+        log.info("openid = {}", openid);
+
+        // ③ 根据 openid 查员工表
+        Employee employee = employeeMapper.getByOpenid(openid);
+
+        if (employee == null) {
+            // ④ 首次登录 → 自动注册一个员工账号（name 默认"微信用户"）
+            log.info("新用户 openid={}，自动注册员工", openid);
+            employee = Employee.builder()
+                    .name("微信用户")
+                    .openid(openid)
+                    .status(StatusConstant.ENABLE)
+                    .createTime(LocalDateTime.now())
+                    .build();
+            // 用原始 SQL 插入（避免 autoFill 拦截器对 createUser 的干扰）
+            employeeMapper.insertWithOpenid(employee);
+        } else {
+            log.info("老员工 id={} 微信登录", employee.getId());
+        }
+
         return employee;
     }
 

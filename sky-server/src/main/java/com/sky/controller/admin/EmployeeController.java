@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.EmployeeDTO;
+import com.sky.dto.EmployeeWxLoginDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
@@ -63,6 +64,31 @@ public class EmployeeController {
                 .build();
 
         return Result.success(employeeLoginVO);
+    }
+
+    /**
+     * 员工微信登录
+     * 前端：wx.login() → code → 传这里 → 调用微信接口换openid → 查库/自动注册 → 返回JWT
+     */
+    @ApiOperation(value = "员工微信登录")
+    @PostMapping("/wxLogin")
+    public Result<EmployeeLoginVO> wxLogin(@RequestBody EmployeeWxLoginDTO dto) {
+        log.info("员工微信登录 code: {}", dto.getCode());
+        Employee employee = employeeService.wxLogin(dto.getCode());
+        // 生成JWT
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
+        String token = JwtUtil.createJWT(
+                jwtProperties.getAdminSecretKey(),
+                jwtProperties.getAdminTtl(),
+                claims);
+        EmployeeLoginVO vo = EmployeeLoginVO.builder()
+                .id(employee.getId())
+                .userName(employee.getUsername())
+                .name(employee.getName())
+                .token(token)
+                .build();
+        return Result.success(vo);
     }
 
     /**

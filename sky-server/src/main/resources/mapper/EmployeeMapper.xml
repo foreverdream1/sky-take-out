@@ -11,7 +11,7 @@
         </where>
         order by create_time desc
     </select>
-    <update id="update" parameterType="Employee">
+    <update id="update" parameterType="com.sky.entity.Employee">
         update employee
         <set>
             <if test="name != null">name=#{name},</if>
@@ -26,4 +26,13 @@
         </set>
         where id =#{id}
     </update>
+
+    <!-- 微信登录新增员工（包含 openid） -->
+    <insert id="insertWithOpenid" parameterType="com.sky.entity.Employee">
+        INSERT INTO employee (
+            name, openid, status, create_time
+        ) VALUES (
+            #{name}, #{openid}, #{status}, #{createTime}
+        )
+    </insert>
 </mapper>

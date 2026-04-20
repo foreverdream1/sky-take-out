@@ -1,5 +1,6 @@
 package com.sky.vo;
 
+import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DishVO implements Serializable {
+public class DishVO extends Dish implements Serializable {
 
     private Long id;
     //菜品名称

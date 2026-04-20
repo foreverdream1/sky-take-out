@@ -18,6 +18,11 @@ public interface EmployeeService {
     Employee login(EmployeeLoginDTO employeeLoginDTO);
 
     /**
+     * 员工微信登录（code换openid → 查库/自动注册）
+     */
+    Employee wxLogin(String code);
+
+    /**
      * 新增员工
      * @param employeeDTO
      * @return

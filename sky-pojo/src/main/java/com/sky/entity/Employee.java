@@ -43,4 +43,7 @@ public class Employee implements Serializable {
 
     private Long updateUser;
 
+    // 微信openid（员工微信登录用）
+    private String openid;
+
 }
