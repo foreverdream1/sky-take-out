@@ -163,8 +163,13 @@ public class DishServiceImpl implements DishService {
             //根据菜品id查询对应的口味
             List<DishFlavor> flavors=dishFlavorMapper.getByDishId(d.getId());
             dishVO.setFlavors(flavors);
-            dishList.add(dishVO);
+            dishVOList.add(dishVO);
         }
         return dishVOList;
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+
     }
 }

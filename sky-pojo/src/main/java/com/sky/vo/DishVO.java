@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DishVO extends Dish implements Serializable {
+public class DishVO  implements Serializable {
 
     private Long id;
     //菜品名称

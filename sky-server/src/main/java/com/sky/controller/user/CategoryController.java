@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("userCategoryController")
 @RequestMapping("/user/category")
 @Slf4j
 @Api(tags = "用户端分类接口")
