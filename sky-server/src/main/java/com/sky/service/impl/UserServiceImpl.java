@@ -92,27 +92,26 @@ public class UserServiceImpl implements com.sky.service.UserService {
      */
     @Override
     public User wxLogin(UserLoginDTO userLoginDTO) {
-
         String openid = getOpenid(userLoginDTO.getCode());
 
-
-        //判断openid是否为空，如果为空表示登陆失败，抛出业务异常
-        if (openid==null){
+        // 判断openid是否为空，如果为空表示登陆失败，抛出业务异常
+        if (openid == null) {
             throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
         }
-        //判断当前用户是否为新用户
+
+        // 判断当前用户是否为新用户
         User user = userMapper.getByOpenid(openid);
-        if(user==null){
+        if (user == null) {
+            // 新用户自动完成注册
+            log.info("新用户注册，openid={}", openid);
             user = User.builder()
                     .openid(openid)
                     .createTime(LocalDateTime.now())
                     .build();
+            userMapper.insert(user);
+        } else {
+            log.info("老用户登录，id={}", user.getId());
         }
-        userMapper.insert(user);
-        //如果是新用户自动完成注册
-
-        //返回用户对象
-
 
         return user;
     }
@@ -122,17 +121,36 @@ public class UserServiceImpl implements com.sky.service.UserService {
      * @param code
      * @return
      */
-    private String getOpenid(String code){
-        //调用微信接口服务，获得挡墙用户的openid
-        Map<String, String> map=new HashMap<>();
-        map.put("appid",weChatProperties.getAppid());
-        map.put("secret",weChatProperties.getSecret());
-        map.put("js_code",code);
-        map.put("grant_type","authorization_code");
+    private String getOpenid(String code) {
+        // 调用微信接口服务，获得当前用户的openid
+        Map<String, String> map = new HashMap<>();
+        map.put("appid", weChatProperties.getAppid());
+        map.put("secret", weChatProperties.getSecret());
+        map.put("js_code", code);
+        map.put("grant_type", "authorization_code");
+
         String json = HttpClientUtil.doGet(WX_LOGIN_URL, map);
+        log.info("微信接口返回: {}", json);
 
         JSONObject jsonObject = JSONObject.parseObject(json);
+
+        // 检查微信接口返回的错误码
+        if (jsonObject == null) {
+            log.error("微信接口返回为空");
+            return null;
+        }
+
+        Integer errcode = jsonObject.getInteger("errcode");
+        if (errcode != null) {
+            String errmsg = jsonObject.getString("errmsg");
+            log.error("微信接口调用失败，errcode={}, errmsg={}", errcode, errmsg);
+            return null;
+        }
+
         String openid = jsonObject.getString("openid");
+        String sessionKey = jsonObject.getString("session_key");
+        log.info("获取openid成功，openid={}, session_key={}", openid, sessionKey);
+
         return openid;
     }
 

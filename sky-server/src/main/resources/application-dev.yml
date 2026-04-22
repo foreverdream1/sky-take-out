@@ -12,11 +12,11 @@ sky:
 #    access-key-secret: YOUR_ACCESS_KEY_SECRET
 #    buckey-name: sky-itcast
   redis:
-    host: localhost
+    host: 172.27.102.175
     port: 6379
     password: 666666
-    database: 1
+    database: 2
   wechat:
     appid: wxe17e68915ea96f29
-    secret: 2ea40f7c40...c27
+    secret: 18fd8659be177446d15c9ab4e01ad1e9
 
