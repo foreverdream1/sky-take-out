@@ -45,7 +45,7 @@ public class OrderTask {
     /**
      * 订单超时未接单，自动取消
      */
-    @Scheduled(cron = "0 0 1 * * ？")//每天凌晨1点触发一次
+    @Scheduled(cron = "0 0 1 * * ?")//每天凌晨1点触发一次
     public void processDeliveryOrder(){
         log.info("定时处理派送中的订单：{}",LocalDateTime.now());
 
