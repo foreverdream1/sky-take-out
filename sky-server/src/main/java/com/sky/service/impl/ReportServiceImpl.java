@@ -1,0 +1,206 @@
+package com.sky.service.impl;
+
+import com.sky.entity.OrderDetail;
+import com.sky.entity.Orders;
+import com.sky.mapper.OrderDetailMapper;
+import com.sky.mapper.OrderMapper;
+import com.sky.mapper.UserMapper;
+import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
+import com.sky.vo.SalesTop10ReportVO;
+import com.sky.vo.TurnoverReportVO;
+import com.sky.vo.UserReportVO;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+@Slf4j
+public class ReportServiceImpl implements ReportService {
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private OrderDetailMapper orderDetailMapper;
+
+    /**
+     * 营业额统计
+     * @param start
+     * @param end
+     * @return
+     */
+    @Override
+    public TurnoverReportVO turnoverStatistics(LocalDate start, LocalDate end) {
+        //当前集合用于存放从start到end的所有日期
+        List<LocalDate> dateList = new ArrayList<>();
+
+        dateList.add(start);
+        while (!start.equals(end)) {
+            //如果start不等于end，则将start加1天，并添加到dateList中
+            start = start.plusDays(1);
+            dateList.add(start);
+        }
+        List<Double> turnoverList = new ArrayList<>();
+        for (LocalDate date : dateList) {
+            //查询date日期对应的营业额数据，查询"已完成的订单"
+            LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);//date日期0点
+            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);//date日期23点59分59秒
+            Map map = new HashMap<>();
+            map.put("beginTime", beginTime);
+            map.put("endTime", endTime);
+            map.put("status", Orders.COMPLETED);
+            Double turnover = orderMapper.sumByMap(map);
+            turnover = turnover == null ? 0.0 : turnover;
+            turnoverList.add(turnover);
+        }
+
+        return TurnoverReportVO
+                .builder()
+                .dateList(StringUtils.join(dateList, ","))
+                .turnoverList(StringUtils.join(turnoverList, ","))
+                .build();
+    }
+
+    /**
+     * 用户统计
+     * @param start
+     * @param end
+     * @return
+     */
+    @Override
+    public UserReportVO userStatistics(LocalDate start, LocalDate end) {
+        List<LocalDate> dateList = new ArrayList<>();
+
+        dateList.add(start);
+        while (!start.equals(end)) {
+            start = start.plusDays(1);
+            dateList.add(start);
+        }
+
+        List<Integer> totalUserList = new ArrayList<>();
+        List<Integer> newUserList = new ArrayList<>();
+
+        for (LocalDate date : dateList) {
+            LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
+            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
+
+            Map map = new HashMap<>();
+            map.put("endTime", endTime);
+            // 总用户数（截止到当天）
+            Integer totalUser = userMapper.countByMap(map);
+            totalUser = totalUser == null ? 0 : totalUser;
+            totalUserList.add(totalUser);
+
+            map.put("beginTime", beginTime);
+            // 新增用户（当天）
+            Integer newUser = userMapper.countByMap(map);
+            newUser = newUser == null ? 0 : newUser;
+            newUserList.add(newUser);
+        }
+
+        return UserReportVO
+                .builder()
+                .dateList(StringUtils.join(dateList, ","))
+                .totalUserList(StringUtils.join(totalUserList, ","))
+                .newUserList(StringUtils.join(newUserList, ","))
+                .build();
+    }
+
+    /**
+     * 订单统计
+     * @param start
+     * @param end
+     * @return
+     */
+    @Override
+    public OrderReportVO ordersStatistics(LocalDate start, LocalDate end) {
+        List<LocalDate> dateList = new ArrayList<>();
+
+        dateList.add(start);
+        while (!start.equals(end)) {
+            start = start.plusDays(1);
+            dateList.add(start);
+        }
+
+        List<Integer> orderCountList = new ArrayList<>();
+        List<Integer> validOrderCountList = new ArrayList<>();
+        Integer totalOrderCount = 0;
+        Integer validOrderCount = 0;
+
+        for (LocalDate date : dateList) {
+            LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
+            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
+
+            Map map = new HashMap<>();
+            map.put("beginTime", beginTime);
+            map.put("endTime", endTime);
+            // 每日订单数
+            Integer orderCount = orderMapper.countByMap(map);
+            orderCount = orderCount == null ? 0 : orderCount;
+            orderCountList.add(orderCount);
+            totalOrderCount += orderCount;
+
+            // 每日有效订单数（已完成）
+            map.put("status", Orders.COMPLETED);
+            Integer validOrder = orderMapper.countByMap(map);
+            validOrder = validOrder == null ? 0 : validOrder;
+            validOrderCountList.add(validOrder);
+            validOrderCount += validOrder;
+        }
+
+        Double orderCompletionRate = 0.0;
+        if (totalOrderCount > 0) {
+            orderCompletionRate = validOrderCount.doubleValue() / totalOrderCount;
+        }
+
+        return OrderReportVO
+                .builder()
+                .dateList(StringUtils.join(dateList, ","))
+                .orderCountList(StringUtils.join(orderCountList, ","))
+                .validOrderCountList(StringUtils.join(validOrderCountList, ","))
+                .totalOrderCount(totalOrderCount)
+                .validOrderCount(validOrderCount)
+                .orderCompletionRate(orderCompletionRate)
+                .build();
+    }
+
+    /**
+     * 销量排名top10
+     * @param start
+     * @param end
+     * @return
+     */
+    @Override
+    public SalesTop10ReportVO salesTop10(LocalDate start, LocalDate end) {
+        LocalDateTime beginTime = LocalDateTime.of(start, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+
+        List<OrderDetail> salesTop10 = orderDetailMapper.getSalesTop10(beginTime, endTime);
+
+        List<String> nameList = new ArrayList<>();
+        List<Integer> numberList = new ArrayList<>();
+        for (OrderDetail detail : salesTop10) {
+            nameList.add(detail.getName());
+            numberList.add(detail.getNumber());
+        }
+
+        return SalesTop10ReportVO
+                .builder()
+                .nameList(StringUtils.join(nameList, ","))
+                .numberList(StringUtils.join(numberList, ","))
+                .build();
+    }
+}

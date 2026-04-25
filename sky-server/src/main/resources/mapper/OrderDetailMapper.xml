@@ -11,4 +11,16 @@
              #{item.dishFlavor}, #{item.number}, #{item.amount})
         </foreach>
     </insert>
+
+    <select id="getSalesTop10" resultType="com.sky.entity.OrderDetail">
+        select d.name, sum(d.number) as number
+        from order_detail d
+        left join orders o on d.order_id = o.id
+        where o.status = 5
+        and o.order_time &gt;= #{beginTime}
+        and o.order_time &lt;= #{endTime}
+        group by d.name
+        order by number desc
+        limit 10
+    </select>
 </mapper>
