@@ -175,4 +175,24 @@ public class OrderServiceImpl implements OrderService {
         webSocketServer.sendToAllClient(json);
     }
 
+    /**
+     * 客户催单
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+        Orders ordersDB=orderMapper.getById(id);
+
+        if(ordersDB==null||!ordersDB.getStatus().equals(Orders.DELIVERY_IN_PROGRESS)){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        Map map=new HashMap();
+        map.put("type",2);//1表示来单提醒，2表示客户催单
+        map.put("orderId",id);
+        map.put("content","订单号："+ordersDB.getNumber());
+        String jsonString = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
+    }
+
 }
