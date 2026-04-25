@@ -96,21 +96,20 @@ public class OrderServiceImpl implements OrderService {
             OrderDetail orderDetail=new OrderDetail();
             BeanUtils.copyProperties(cart,orderDetail);
             orderDetail.setOrderId(orders.getId());
-
+            orderDetailsList.add(orderDetail); // Bug1修复：将订单详情加入列表
         }
         orderDetailMapper.insertBatch(orderDetailsList);
-        shoppingCartMapper.deleteById(userId);
+
+        //清空购物车数据
+        shoppingCartMapper.deleteByUserId(userId); // Bug2修复：使用正确的方法名
+
+        //封装vo返回
         OrderSubmitVO orderSubmitVO = OrderSubmitVO.builder()
                 .id(orders.getId())
                 .orderTime(orders.getOrderTime())
                 .orderNumber(orders.getNumber())
                 .orderAmount(orders.getAmount())
                 .build();
-        //清空购物车数据
-
-
-        //封装vo返回
-
 
         return orderSubmitVO;
     }
@@ -183,7 +182,7 @@ public class OrderServiceImpl implements OrderService {
     public void reminder(Long id) {
         Orders ordersDB=orderMapper.getById(id);
 
-        if(ordersDB==null||!ordersDB.getStatus().equals(Orders.DELIVERY_IN_PROGRESS)){
+        if(ordersDB==null||!ordersDB.getStatus().equals(Orders.TO_BE_CONFIRMED)){
             throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
         }
 

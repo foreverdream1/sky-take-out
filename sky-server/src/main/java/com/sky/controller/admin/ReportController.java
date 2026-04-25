@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,62 +32,62 @@ public class ReportController {
 
     /**
      * 营业额统计
-     * @param start
+     * @param begin
      * @param end
      * @return
      */
     @GetMapping("/turnoverStatistics")
     @ApiOperation("营业额统计")
-    public Result<TurnoverReportVO> turnoverStatistics(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
-                                                       @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+    public Result<TurnoverReportVO> turnoverStatistics(@RequestParam("begin") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+                                                       @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
 
-        log.info("营业额统计：{} - {}",start,end);
-        return Result.success(reportService.turnoverStatistics(start,end));
+        log.info("营业额统计：{} - {}",begin,end);
+        return Result.success(reportService.turnoverStatistics(begin,end));
     }
 
     /**
      * 用户统计
-     * @param start
+     * @param begin
      * @param end
      * @return
      */
     @GetMapping("/userStatistics")
     @ApiOperation("用户统计")
-    public Result<UserReportVO> userStatistics(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
-                                                @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+    public Result<UserReportVO> userStatistics(@RequestParam("begin") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+                                                @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
 
-        log.info("用户统计：{} - {}",start,end);
-        return Result.success(reportService.userStatistics(start,end));
+        log.info("用户数据统计：{} - {}",begin,end);
+        return Result.success(reportService.userStatistics(begin,end));
     }
 
     /**
      * 订单统计
-     * @param start
+     * @param begin
      * @param end
      * @return
      */
     @GetMapping("/ordersStatistics")
     @ApiOperation("订单统计")
-    public Result<OrderReportVO> ordersStatistics(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
-                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+    public Result<OrderReportVO> ordersStatistics(@RequestParam("begin") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+                                                   @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
 
-        log.info("订单统计：{} - {}",start,end);
-        return Result.success(reportService.ordersStatistics(start,end));
+        log.info("订单统计：{} - {}",begin,end);
+        return Result.success(reportService.ordersStatistics(begin,end));
     }
 
     /**
      * 销量排名top10
-     * @param start
+     * @param begin
      * @param end
      * @return
      */
     @GetMapping("/top10")
     @ApiOperation("销量排名top10")
-    public Result<SalesTop10ReportVO> salesTop10(@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate start,
-                                                  @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
+    public Result<SalesTop10ReportVO> salesTop10(@RequestParam("begin") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate begin,
+                                                  @RequestParam("end") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end){
 
-        log.info("销量排名top10：{} - {}",start,end);
-        return Result.success(reportService.salesTop10(start,end));
+        log.info("销量排名top10：{} - {}",begin,end);
+        return Result.success(reportService.salesTop10(begin,end));
     }
 
 }

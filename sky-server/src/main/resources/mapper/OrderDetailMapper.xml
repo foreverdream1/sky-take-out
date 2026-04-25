@@ -12,13 +12,17 @@
         </foreach>
     </insert>
 
-    <select id="getSalesTop10" resultType="com.sky.entity.OrderDetail">
+    <select id="getSalesTop10" resultType="com.sky.dto.GoodsSalesDTO">
         select d.name, sum(d.number) as number
         from order_detail d
         left join orders o on d.order_id = o.id
         where o.status = 5
-        and o.order_time &gt;= #{beginTime}
-        and o.order_time &lt;= #{endTime}
+        <if test="beginTime !=null">
+            and o.order_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime !=null">
+            and o.order_time &lt;= #{endTime}
+        </if>
         group by d.name
         order by number desc
         limit 10

@@ -28,11 +28,11 @@ public class OrderController {
      */
     @PostMapping("/submit")
     @ApiOperation("提交订单")
-    public Result<OrdersSubmitDTO> submit(@RequestBody OrdersSubmitDTO ordersSubmitDTO){
+    public Result<OrderSubmitVO> submit(@RequestBody OrdersSubmitDTO ordersSubmitDTO){
         log.info("用户下单：{}",ordersSubmitDTO);
         OrderSubmitVO order=orderService.submitOrder(ordersSubmitDTO);
 
-        return Result.success(ordersSubmitDTO);
+        return Result.success(order);
     }
 
     /**

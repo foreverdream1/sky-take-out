@@ -79,7 +79,15 @@ public class DishController {
     }
 
 
-    public Result<String> startOrStop(@PathVariable Integer status,Long id){
+    /**
+     * 菜品启售停售
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("菜品启售停售")
+    public Result<String> startOrStop(@PathVariable Integer status, @RequestParam Long id){
         dishService.startOrStop(status,id);
         clearCache("dish_*");
         return Result.success();

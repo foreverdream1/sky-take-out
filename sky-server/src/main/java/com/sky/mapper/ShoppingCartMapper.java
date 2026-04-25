@@ -35,7 +35,7 @@ public interface ShoppingCartMapper {
      * @param currentId
      */
     @Delete("delete from shopping_cart where user_id=#{userId}")
-    void deleteBuUserId(Long currentId);
+    void deleteByUserId(Long currentId);
 
     /**
      * 根据id删除购物车中的单个商品

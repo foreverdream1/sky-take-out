@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.sky.dto.GoodsSalesDTO;
 import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderDetailMapper;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -137,32 +139,29 @@ public class ReportServiceImpl implements ReportService {
 
         List<Integer> orderCountList = new ArrayList<>();
         List<Integer> validOrderCountList = new ArrayList<>();
-        Integer totalOrderCount = 0;
-        Integer validOrderCount = 0;
+
 
         for (LocalDate date : dateList) {
             LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
 
-            Map map = new HashMap<>();
-            map.put("beginTime", beginTime);
-            map.put("endTime", endTime);
+            Integer orderCount = getOrderCount(beginTime, endTime, null);
+            Integer validOrderCount = getOrderCount(beginTime, endTime, Orders.COMPLETED);
             // 每日订单数
-            Integer orderCount = orderMapper.countByMap(map);
-            orderCount = orderCount == null ? 0 : orderCount;
+
             orderCountList.add(orderCount);
-            totalOrderCount += orderCount;
 
             // 每日有效订单数（已完成）
-            map.put("status", Orders.COMPLETED);
-            Integer validOrder = orderMapper.countByMap(map);
-            validOrder = validOrder == null ? 0 : validOrder;
-            validOrderCountList.add(validOrder);
-            validOrderCount += validOrder;
+
+            validOrderCountList.add(validOrderCount);
+
         }
+        Integer totalOrderCount = orderCountList.stream().reduce(Integer::sum).get();
+        Integer validOrderCount = validOrderCountList.stream().reduce(Integer::sum).get();
 
         Double orderCompletionRate = 0.0;
         if (totalOrderCount > 0) {
+            //计算订单完成率
             orderCompletionRate = validOrderCount.doubleValue() / totalOrderCount;
         }
 
@@ -188,19 +187,39 @@ public class ReportServiceImpl implements ReportService {
         LocalDateTime beginTime = LocalDateTime.of(start, LocalTime.MIN);
         LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
 
-        List<OrderDetail> salesTop10 = orderDetailMapper.getSalesTop10(beginTime, endTime);
+        List<GoodsSalesDTO> salesTop10 = orderDetailMapper.getSalesTop10(beginTime, endTime);
 
-        List<String> nameList = new ArrayList<>();
-        List<Integer> numberList = new ArrayList<>();
-        for (OrderDetail detail : salesTop10) {
-            nameList.add(detail.getName());
-            numberList.add(detail.getNumber());
-        }
 
+//        for (GoodsSalesDTO detail : salesTop10) {
+//            nameList.add(detail.getName());
+//            numberList.add(detail.getNumber());
+//        }
+        List<String> names = salesTop10.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList());
+        String nameList = StringUtils.join(names, ",");
+
+        List<Integer> numbers= salesTop10.stream().map(GoodsSalesDTO::getNumber).collect(Collectors.toList());
+        String numberList = StringUtils.join(numbers, ",");
+
+        //封装返回结果数据
         return SalesTop10ReportVO
                 .builder()
-                .nameList(StringUtils.join(nameList, ","))
-                .numberList(StringUtils.join(numberList, ","))
+                .nameList(nameList)
+                .numberList(numberList)
                 .build();
+    }
+
+    /**
+     * 获取订单数量
+     * @param beginTime
+     * @param endTime
+     * @param status
+     * @return
+     */
+    private Integer getOrderCount(LocalDateTime beginTime, LocalDateTime endTime,Integer status) {
+        Map map=new HashMap();
+        map.put("beginTime",beginTime);
+        map.put("endTime",endTime);
+        map.put("status",status);
+        return orderMapper.countByMap(map);
     }
 }
