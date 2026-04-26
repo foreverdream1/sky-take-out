@@ -3,6 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.SetmealMapper">
 
+    <resultMap id="setmealAndDishMap" type="com.sky.vo.SetmealVO" autoMapping="true">
+        <result column="id" property="id"/>
+        <collection property="setmealDishes" ofType="com.sky.entity.SetmealDish">
+            <result column="sd_id" property="id"/>
+            <result column="setmeal_id" property="setmealId"/>
+            <result column="dish_id" property="dishId"/>
+            <result column="sd_name" property="name"/>
+            <result column="sd_price" property="price"/>
+            <result column="copies" property="copies"/>
+        </collection>
+    </resultMap>
 
     <select id="list" resultType="com.sky.entity.Setmeal" parameterType="com.sky.entity.Setmeal">
         select * from setmeal
@@ -40,6 +51,22 @@
         order by s.create_time desc
     </select>
 
+    <select id="getByIdWithDish" parameterType="long" resultMap="setmealAndDishMap">
+        select a.*,
+               b.id    sd_id,
+               b.setmeal_id,
+               b.dish_id,
+               b.name  sd_name,
+               b.price sd_price,
+               b.copies
+        from setmeal a
+                 left join
+             setmeal_dish b
+             on
+                 a.id = b.setmeal_id
+        where a.id = #{id}
+    </select>
+
     <delete id="deleteByIds">
         delete from setmeal where id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
@@ -61,4 +88,15 @@
         </set>
         where id = #{id}
     </update>
+    <select id="countByMap" resultType="java.lang.Integer">
+        select count(id) from setmeal
+        <where>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+        </where>
+    </select>
 </mapper>

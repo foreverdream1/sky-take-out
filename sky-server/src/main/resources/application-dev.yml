@@ -6,11 +6,11 @@ sky:
     database: sky_take_out
     username: root
     password: 666666
-#  alioss:
-#    endpoint: oss-cn-aliyuncs.com
-#    access-key-id: YOUR_ACCESS_KEY_ID
-#    access-key-secret: YOUR_ACCESS_KEY_SECRET
-#    buckey-name: sky-itcast
+  alioss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    access-key-id: your-access-key-id
+    access-key-secret: your-access-key-secret
+    bucket-name: your-bucket-name
   redis:
     host: 172.27.102.175
     port: 6379
@@ -19,4 +19,16 @@ sky:
   wechat:
     appid: wxe17e68915ea96f29
     secret: 18fd8659be177446d15c9ab4e01ad1e9
+    mchid: your-mchid
+    mchSerialNo: your-mchSerialNo
+    privateKeyFilePath: D:\pay\apiclient_key.pem
+    apiV3Key: your-apiV3Key
+    weChatPayCertFilePath: D:\pay\wechatpay_xxx.pem
+    notifyUrl: https://your-domain/notify/paySuccess
+    refundNotifyUrl: https://your-domain/notify/refundSuccess
+  shop:
+    address: 北京市海淀区上地十街10号
+  baidu:
+    ak: your-baidu-ak
+
 

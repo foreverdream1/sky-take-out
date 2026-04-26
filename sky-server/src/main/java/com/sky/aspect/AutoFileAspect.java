@@ -36,7 +36,7 @@ public class AutoFileAspect {
      * 前置通知，在通知中进行公共字段的赋值
      */
     @Before("autoFillPointCut()")
-    public void autoFile(JoinPoint joinPoint){
+    public void autoFill(JoinPoint joinPoint){
         log.info("开始进行公共字段的填充...");
         //获取当前被拦截的方法上的数据库操作类型
         MethodSignature signature =(MethodSignature) joinPoint.getSignature();//方法签名对象
