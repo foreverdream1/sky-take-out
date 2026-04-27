@@ -1,0 +1,91 @@
+<view class="dish-detail-page">
+  <!-- 菜品图片 -->
+  <view class="dish-image-section">
+    <image class="dish-image" src="{{dish.image || '/assets/images/default-dish.png'}}" mode="aspectFill"/>
+    <view class="back-btn" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+  </view>
+
+  <!-- 菜品信息 -->
+  <view class="dish-info-section">
+    <view class="dish-header">
+      <text class="dish-name">{{dish.name}}</text>
+      <view class="dish-tags" wx:if="{{dish.tags && dish.tags.length > 0}}">
+        <text class="tag" wx:for="{{dish.tags}}" wx:key="index">{{item}}</text>
+      </view>
+    </view>
+    
+    <view class="dish-meta">
+      <text class="sales">月售 {{dish.sales || 0}}</text>
+      <text class="divider">|</text>
+      <text class="favor">好评率 {{dish.favorRate || 95}}%</text>
+    </view>
+
+    <view class="dish-desc" wx:if="{{dish.description}}">
+      <text>{{dish.description}}</text>
+    </view>
+
+    <view class="dish-price-row">
+      <view class="price-section">
+        <text class="price-symbol">¥</text>
+        <text class="price-value">{{dish.price}}</text>
+        <text class="price-original" wx:if="{{dish.originalPrice}}">¥{{dish.originalPrice}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 规格选择 -->
+  <view class="specs-section" wx:if="{{dish.flavors && dish.flavors.length > 0}}">
+    <view class="section-title">规格选择</view>
+    <view class="spec-group" wx:for="{{dish.flavors}}" wx:key="index">
+      <text class="spec-label">{{item.name}}</text>
+      <view class="spec-options">
+        <view 
+          class="spec-option {{selectedFlavors[item.name] === opt ? 'active' : ''}}"
+          wx:for="{{item.list}}"
+          wx:for-item="opt"
+          wx:key="opt"
+          data-flavor="{{item.name}}"
+          data-value="{{opt}}"
+          bindtap="selectFlavor"
+        >
+          {{opt}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 商品详情 -->
+  <view class="detail-section">
+    <view class="section-title">商品详情</view>
+    <view class="detail-content">
+      <text wx:if="{{dish.detail}}">{{dish.detail}}</text>
+      <text wx:else>精选优质食材，匠心烹饪，为您呈现美味佳肴。</text>
+    </view>
+  </view>
+
+  <!-- 底部占位 -->
+  <view class="footer-placeholder"></view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="cart-info" bindtap="goToCart">
+      <view class="cart-icon">
+        <text class="cart-badge" wx:if="{{cartCount > 0}}">{{cartCount}}</text>
+      </view>
+      <view class="cart-price">
+        <text class="price-symbol">¥</text>
+        <text class="price-value">{{cartTotal}}</text>
+      </view>
+    </view>
+    <view class="action-btns">
+      <view class="btn-add-cart {{!canAdd ? 'disabled' : ''}}" bindtap="addToCart">
+        <text>加入购物车</text>
+      </view>
+      <view class="btn-buy {{!canAdd ? 'disabled' : ''}}" bindtap="buyNow">
+        <text>立即购买</text>
+      </view>
+    </view>
+  </view>
+</view>

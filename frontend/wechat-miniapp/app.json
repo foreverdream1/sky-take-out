@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/customerLogin/customerLogin",
+    "pages/customerHome/customerHome",
+    "pages/customerCart/customerCart",
+    "pages/customerOrder/customerOrder",
+    "pages/customerMy/customerMy",
+    "pages/addressEdit/addressEdit",
+    "pages/addressList/addressList",
+    "pages/dishDetail/dishDetail",
+    "pages/orderConfirm/orderConfirm",
+    "pages/paySuccess/paySuccess"
+  ],
+  "window": {
+    "navigationBarTitleText": "瑞吉外卖",
+    "navigationBarBackgroundColor": "#ff6b35",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f6fa"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ff6b35",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/customerHome/customerHome",
+        "text": "首页",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home_active.png"
+      },
+      {
+        "pagePath": "pages/customerCart/customerCart",
+        "text": "购物车",
+        "iconPath": "assets/icons/cart.png",
+        "selectedIconPath": "assets/icons/cart_active.png"
+      },
+      {
+        "pagePath": "pages/customerOrder/customerOrder",
+        "text": "订单",
+        "iconPath": "assets/icons/order.png",
+        "selectedIconPath": "assets/icons/order_active.png"
+      },
+      {
+        "pagePath": "pages/customerMy/customerMy",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile_active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

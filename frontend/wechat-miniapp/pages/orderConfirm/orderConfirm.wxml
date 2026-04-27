@@ -1,0 +1,104 @@
+<view class="order-confirm-page">
+  <!-- 地址选择 -->
+  <view class="address-section" bindtap="selectAddress">
+    <block wx:if="{{address}}">
+      <view class="address-info">
+        <view class="address-header">
+          <text class="address-name">{{address.consignee}}</text>
+          <text class="address-phone">{{address.phone}}</text>
+        </view>
+        <view class="address-detail">
+          <text class="address-tag" wx:if="{{address.isDefault}}">默认</text>
+          <text>{{address.provinceName}}{{address.cityName}}{{address.districtName}}{{address.detail}}</text>
+        </view>
+      </view>
+      <text class="arrow">></text>
+    </block>
+    <block wx:else>
+      <view class="no-address">
+        <text class="add-icon">+</text>
+        <text>请选择收货地址</text>
+      </view>
+    </block>
+    <image class="address-bg" src="/assets/images/address-line.png" mode="aspectFill"/>
+  </view>
+
+  <!-- 订单商品 -->
+  <view class="order-section">
+    <view class="section-title">订单商品</view>
+    <view class="dish-list">
+      <view class="dish-item" wx:for="{{cartList}}" wx:key="id">
+        <image class="dish-img" src="{{item.image || '/assets/images/default-dish.png'}}" mode="aspectFill"/>
+        <view class="dish-info">
+          <text class="dish-name">{{item.name}}</text>
+          <text class="dish-flavor" wx:if="{{item.dishFlavor}}">{{item.dishFlavor}}</text>
+        </view>
+        <view class="dish-price">
+          <text class="price">¥{{item.amount}}</text>
+          <text class="count">x{{item.number}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 配送信息 -->
+  <view class="delivery-section">
+    <view class="delivery-item">
+      <text class="label">预计送达</text>
+      <text class="value">{{deliveryTime}}</text>
+    </view>
+    <view class="delivery-item" bindtap="selectRemark">
+      <text class="label">订单备注</text>
+      <view class="remark-value">
+        <text class="placeholder" wx:if="{{!remark}}">请输入备注信息</text>
+        <text class="text" wx:else>{{remark}}</text>
+        <text class="arrow">></text>
+      </view>
+    </view>
+    <view class="delivery-item">
+      <text class="label">餐具份数</text>
+      <view class="tableware-options">
+        <view 
+          class="option {{tableware === item ? 'active' : ''}}"
+          wx:for="{{['1份', '2份', '3份', '无需餐具']}}"
+          wx:key="index"
+          data-value="{{item}}"
+          bindtap="selectTableware"
+        >
+          {{item}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支付方式 -->
+  <view class="payment-section">
+    <view class="section-title">支付方式</view>
+    <view class="payment-options">
+      <view 
+        class="payment-option {{payMethod === 1 ? 'active' : ''}}"
+        data-method="1"
+        bindtap="selectPayMethod"
+      >
+        <text class="icon">💰</text>
+        <text class="name">微信支付</text>
+        <view class="check {{payMethod === 1 ? 'active' : ''}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部占位 -->
+  <view class="footer-placeholder"></view>
+
+  <!-- 底部结算栏 -->
+  <view class="bottom-bar">
+    <view class="total-section">
+      <text class="total-label">合计:</text>
+      <text class="total-symbol">¥</text>
+      <text class="total-value">{{totalAmount}}</text>
+    </view>
+    <view class="submit-btn {{!address ? 'disabled' : ''}}" bindtap="submitOrder">
+      <text>提交订单</text>
+    </view>
+  </view>
+</view>

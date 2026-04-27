@@ -1,0 +1,118 @@
+<view class="container">
+
+  <!-- 店铺状态提示 -->
+  <view class="shop-status-bar" wx:if="{{shopStatus === 0}}">
+    <text class="status-text">店铺已打烊，暂不接受新订单</text>
+  </view>
+
+  <!-- 分类侧边栏 + 商品列表 -->
+  <view class="content-area">
+    <!-- 左侧分类 -->
+    <scroll-view class="category-nav" scroll-y>
+      <view
+        class="cat-item {{activeCategoryId === item.id ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="onCategoryTap"
+      >
+        <text class="cat-text">{{item.name}}</text>
+      </view>
+    </scroll-view>
+
+    <!-- 右侧商品列表 -->
+    <scroll-view class="goods-list" scroll-y>
+      <!-- 加载骨架屏 -->
+      <view class="loading-skeleton" wx:if="{{loading}}">
+        <view class="skeleton-card" wx:for="{{6}}" wx:key="*this">
+          <view class="ske-img"></view>
+          <view class="ske-content">
+            <view class="ske-line long"></view>
+            <view class="ske-line medium"></view>
+            <view class="ske-line short"></view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 菜品列表 -->
+      <block wx:if="{{!loading}}">
+        <view class="goods-card" wx:for="{{dishList}}" wx:key="id">
+          <view class="goods-img-wrap">
+            <image class="goods-img" src="{{item.image || '/assets/images/default-food.png'}}" mode="aspectFill"/>
+          </view>
+          <view class="goods-info">
+            <text class="goods-name">{{item.name}}</text>
+            <text class="goods-desc" wx:if="{{item.description}}">{{item.description}}</text>
+            <view class="goods-bottom">
+              <view class="cart-control">
+                <!-- 有口味：显示选规格按钮 -->
+                <view wx:if="{{item.flavors && item.flavors.length > 0}}" class="select-spec-btn" data-item="{{item}}" data-type="dish" catchtap="onAddTap">
+                  <text>选规格</text>
+                  <view wx:if="{{getCartItemCount(item.id, 'dish') > 0}}" class="spec-count-dot">{{getCartItemCount(item.id, 'dish')}}</view>
+                </view>
+                <!-- 无口味：只显示加号按钮 -->
+                <view wx:else class="qty-wrap">
+                  <view class="qty-btn qty-plus {{getCartItemCount(item.id, 'dish') > 0 ? 'has-count' : ''}}" data-item="{{item}}" data-type="dish" catchtap="onAddTap">+</view>
+                  <text class="qty-num" wx:if="{{getCartItemCount(item.id, 'dish') > 0}}">{{getCartItemCount(item.id, 'dish')}}</text>
+                </view>
+              </view>
+              <text class="price-integer">¥{{item.price}}</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 套餐列表 -->
+        <view class="goods-card setmeal-card" wx:for="{{setmealList}}" wx:key="id">
+          <view class="goods-img-wrap">
+            <view class="setmeal-tag">套餐</view>
+            <image class="goods-img" src="{{item.image || '/assets/images/default-food.png'}}" mode="aspectFill"/>
+          </view>
+          <view class="goods-info">
+            <text class="goods-name">{{item.name}}</text>
+            <text class="goods-desc" wx:if="{{item.description}}">{{item.description}}</text>
+            <view class="goods-bottom">
+              <view class="cart-control">
+                <view class="qty-wrap">
+                  <view class="qty-btn qty-plus {{getCartItemCount(item.id, 'setmeal') > 0 ? 'has-count' : ''}}" data-item="{{item}}" data-type="setmeal" catchtap="onAddTap">+</view>
+                  <text class="qty-num" wx:if="{{getCartItemCount(item.id, 'setmeal') > 0}}">{{getCartItemCount(item.id, 'setmeal')}}</text>
+                </view>
+              </view>
+              <text class="price-integer">¥{{item.price}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 空状态 -->
+      <view class="empty-goods" wx:if="{{!loading && dishList.length === 0 && setmealList.length === 0}}">
+        <text class="empty-text">该分类暂无商品</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部购物车浮窗 -->
+  <view class="cart-float-bar {{cartTotalCount > 0 ? 'show' : ''}}">
+    <view class="cart-float-content" bindtap="onCartTap">
+      <view class="cart-float-icon">
+        <text class="cart-icon-emoji">🛒</text>
+        <view wx:if="{{cartTotalCount > 0}}" class="cart-float-badge">{{cartTotalCount}}</view>
+      </view>
+      <view class="cart-float-info">
+        <text class="cart-float-price">¥{{cartTotalAmount}}</text>
+        <text class="cart-float-tip">另需配送费¥0</text>
+      </view>
+    </view>
+    <view class="cart-float-btn {{cartTotalCount > 0 ? 'active' : ''}}" bindtap="onSubmitOrder">
+      <text>{{cartTotalCount > 0 ? '去结算' : '购物车是空的'}}</text>
+    </view>
+  </view>
+
+  <!-- 菜品规格弹窗组件（底部滑出） -->
+  <dish-popup
+    show="{{showDishPopup}}"
+    dish="{{currentDish}}"
+    bind:close="closeDishPopup"
+    bind:add="onDishPopupAdd"
+  />
+
+</view>

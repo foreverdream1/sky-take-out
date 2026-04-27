@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+miniprogram_npm/
+
+# Build output
+dist/
+miniprogram/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# WeChat DevTools private config (contains personal settings)
+project.private.config.json
+
+# Environment / secrets
+.env
+.env.*

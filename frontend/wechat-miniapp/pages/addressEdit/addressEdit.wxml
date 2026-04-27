@@ -1,0 +1,138 @@
+<view class="container">
+  
+  <!-- 地址列表 -->
+  <view class="address-list">
+    <view class="address-item" wx:for="{{addressList}}" wx:key="id">
+      <view class="address-content" bindtap="onEditAddress" data-address="{{item}}">
+        <view class="address-top">
+          <text class="default-tag" wx:if="{{item.isDefault === 1}}">默认</text>
+          <text class="label-tag" wx:if="{{item.label}}">{{item.label}}</text>
+          <text class="consignee">{{item.consignee}}</text>
+          <text class="phone">{{item.phone}}</text>
+          <text class="sex-tag">{{item.sex === '1' ? '先生' : '女士'}}</text>
+        </view>
+        <view class="address-detail">
+          <text>{{item.provinceName}}{{item.cityName}}{{item.districtName}}{{item.detail}}</text>
+        </view>
+      </view>
+      <view class="address-actions">
+        <view class="action-btn default-btn" wx:if="{{item.isDefault !== 1}}" data-id="{{item.id}}" bindtap="onSetDefault">
+          <text>设为默认</text>
+        </view>
+        <view class="action-btn delete-btn" data-id="{{item.id}}" bindtap="onDeleteAddress">
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{addressList.length === 0}}">
+    <text>暂无地址，点击下方按钮添加</text>
+  </view>
+
+  <!-- 新增按钮 -->
+  <view class="add-btn-wrapper">
+    <view class="add-btn" bindtap="onAddAddress">
+      <text>+ 新增地址</text>
+    </view>
+  </view>
+
+  <!-- 编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{showEditModal}}" bindtap="closeEditModal">
+    <view class="modal-content edit-modal" catchtap="preventBubble">
+      <view class="modal-header">
+        <text class="modal-title">{{isEdit ? '编辑地址' : '新增地址'}}</text>
+        <view class="modal-close" bindtap="closeEditModal">×</view>
+      </view>
+      
+      <scroll-view class="form-content" scroll-y>
+        <view class="form-item">
+          <text class="form-label">联系人</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入联系人姓名"
+            value="{{editForm.consignee}}"
+            data-field="consignee"
+            bindinput="onInputChange"
+          />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">手机号</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入手机号"
+            type="number"
+            value="{{editForm.phone}}"
+            data-field="phone"
+            bindinput="onInputChange"
+          />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">性别</text>
+          <radio-group class="radio-group" bindchange="onSexChange">
+            <label class="radio-item">
+              <radio value="1" checked="{{editForm.sex === '1'}}" />
+              <text>先生</text>
+            </label>
+            <label class="radio-item">
+              <radio value="0" checked="{{editForm.sex === '0'}}" />
+              <text>女士</text>
+            </label>
+          </radio-group>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">省市区</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入省市区，如：北京市北京市朝阳区"
+            value="{{editForm.provinceName}}"
+            data-field="provinceName"
+            bindinput="onInputChange"
+          />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">详细地址</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入详细地址，如：XX街道XX号"
+            value="{{editForm.detail}}"
+            data-field="detail"
+            bindinput="onInputChange"
+          />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">标签</text>
+          <view class="label-options">
+            <view 
+              class="label-option {{editForm.label === item ? 'selected' : ''}}"
+              wx:for="{{labelOptions}}"
+              wx:key="*this"
+              data-label="{{item}}"
+              bindtap="onLabelSelect"
+            >
+              {{item}}
+            </view>
+          </view>
+        </view>
+        
+        <view class="form-item switch-item">
+          <text class="form-label">设为默认地址</text>
+          <switch checked="{{editForm.isDefault === 1}}" bindchange="onDefaultChange"/>
+        </view>
+      </scroll-view>
+
+      <view class="modal-footer">
+        <view class="save-btn" bindtap="onSaveAddress">
+          <text>保存</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

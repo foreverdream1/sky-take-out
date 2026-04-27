@@ -1,0 +1,37 @@
+<!-- 顾客端登录页：微信一键登录 -->
+<view class="login-page">
+  <!-- 顶部品牌区 -->
+  <view class="brand-section">
+    <view class="brand-logo">🍱</view>
+    <text class="brand-name">瑞吉外卖</text>
+    <text class="brand-slogan">精选美食，送到家门口</text>
+  </view>
+
+  <!-- 店铺状态 -->
+  <view class="shop-status-banner {{shopOpen ? 'open' : 'closed'}}">
+    <text class="status-dot">●</text>
+    <text>{{shopOpen ? '正在营业，欢迎点餐' : '休息中，暂不接受订单'}}</text>
+  </view>
+
+  <!-- 登录按钮区 -->
+  <view class="login-section">
+    <button
+      class="wx-login-btn"
+      type="primary"
+      loading="{{logging}}"
+      disabled="{{logging}}"
+      open-type="chooseAvatar"
+      bindchooseavatar="onChooseAvatar"
+    >
+      <text class="btn-icon">👤</text>
+      <text class="btn-text">{{logging ? '登录中...' : '微信授权登录'}}</text>
+    </button>
+
+    <view class="agreement-text">
+      登录即表示同意
+      <text class="link">《用户服务协议》</text>
+      和
+      <text class="link">《隐私政策》</text>
+    </view>
+  </view>
+</view>

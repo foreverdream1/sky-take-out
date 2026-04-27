@@ -1,0 +1,52 @@
+<view class="dish-popup-mask {{show ? 'show' : ''}}" bindtap="closePopup">
+  <view class="dish-popup-content" catchtap="preventBubble">
+    <!-- 关闭按钮 -->
+    <view class="popup-close" bindtap="closePopup">
+      <text class="close-icon">×</text>
+    </view>
+    
+    <!-- 菜品图片 -->
+    <image class="dish-image" src="{{dish.image || '/assets/images/default-dish.png'}}" mode="aspectFill"/>
+    
+    <!-- 菜品信息 -->
+    <view class="dish-info">
+      <text class="dish-name">{{dish.name}}</text>
+      <text class="dish-desc" wx:if="{{dish.description}}">{{dish.description}}</text>
+      <view class="dish-sales" wx:if="{{dish.sales}}">
+        <text>月售 {{dish.sales}}</text>
+        <text wx:if="{{dish.favorRate}}"> 好评率 {{dish.favorRate}}%</text>
+      </view>
+    </view>
+    
+    <!-- 规格选择 -->
+    <view class="dish-specs" wx:if="{{dish.flavors && dish.flavors.length > 0}}">
+      <view class="spec-section" wx:for="{{dish.flavors}}" wx:key="index">
+        <text class="spec-name">{{item.name}}</text>
+        <view class="spec-options">
+          <view 
+            class="spec-option {{selectedFlavors[item.name] === opt ? 'active' : ''}}"
+            wx:for="{{item.list}}"
+            wx:for-item="opt"
+            wx:key="opt"
+            data-flavor="{{item.name}}"
+            data-value="{{opt}}"
+            bindtap="selectFlavor"
+          >
+            {{opt}}
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 底部操作栏 -->
+    <view class="popup-footer">
+      <view class="price-section">
+        <text class="price-symbol">¥</text>
+        <text class="price-value">{{dish.price}}</text>
+      </view>
+      <view class="add-btn {{!canAdd ? 'disabled' : ''}}" bindtap="addToCart">
+        <text>{{canAdd ? '加入购物车' : '请选择规格'}}</text>
+      </view>
+    </view>
+  </view>
+</view>

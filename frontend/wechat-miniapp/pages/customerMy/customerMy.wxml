@@ -1,0 +1,63 @@
+<!-- 顾客端"我的"页面 -->
+<view class="my-page">
+
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="user-info">
+      <view class="user-avatar" bindtap="changeAvatar">
+        <image class="avatar-img" src="{{userInfo.avatarUrl || '/assets/icons/profile.png'}}" mode="aspectFill" />
+        <view class="avatar-edit">✏️</view>
+      </view>
+      <view class="user-detail">
+        <text class="user-name">{{userInfo.name || '微信用户'}}</text>
+        <text class="user-id" wx:if="{{userInfo.openid}}">ID: {{userInfo.openid.slice(0, 12)}}...</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷功能区 -->
+  <view class="shortcut-grid">
+    <view class="shortcut-item" bindtap="goToOrders">
+      <text class="shortcut-icon">📋</text>
+      <text class="shortcut-label">我的订单</text>
+    </view>
+    <view class="shortcut-item" bindtap="goToAddress">
+      <text class="shortcut-icon">📍</text>
+      <text class="shortcut-label">收货地址</text>
+    </view>
+    <view class="shortcut-item" bindtap="showAbout">
+      <text class="shortcut-icon">📞</text>
+      <text class="shortcut-label">联系客服</text>
+    </view>
+    <view class="shortcut-item" bindtap="showAbout">
+      <text class="shortcut-icon">ℹ️</text>
+      <text class="shortcut-label">关于我们</text>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-section">
+    <view class="menu-item" bindtap="goToAddress">
+      <text class="menu-icon">🏠</text>
+      <text class="menu-text">收货地址管理</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToOrders" data-status="2">
+      <text class="menu-icon">🔔</text>
+      <text class="menu-text">待处理订单</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="showService">
+      <text class="menu-icon">💬</text>
+      <text class="menu-text">在线客服</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-btn" bindtap="onLogout">
+    <text>退出登录</text>
+  </view>
+
+  <view class="app-version">瑞吉外卖 v1.0.0</view>
+</view>

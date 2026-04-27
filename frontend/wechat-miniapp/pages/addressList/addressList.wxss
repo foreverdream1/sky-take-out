@@ -1,0 +1,172 @@
+page {
+  background: #f5f6fa;
+}
+
+.address-list-page {
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 地址列表 */
+.address-list {
+  padding: 20rpx;
+}
+
+.address-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.address-item.default {
+  border: 2rpx solid #ff6b35;
+}
+
+.address-item.default::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8rpx;
+  height: 100%;
+  background: #ff6b35;
+  border-radius: 16rpx 0 0 16rpx;
+}
+
+.address-content {
+  flex: 1;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 20rpx;
+}
+
+.phone {
+  font-size: 28rpx;
+  color: #666;
+  margin-right: 16rpx;
+}
+
+.default-tag {
+  padding: 4rpx 12rpx;
+  background: #fff5f2;
+  color: #ff6b35;
+  font-size: 20rpx;
+  border-radius: 6rpx;
+}
+
+.address-detail {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+}
+
+.address-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-left: 20rpx;
+}
+
+.action-btn {
+  width: 60rpx;
+  height: 60rpx;
+  background: #f5f5f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn.delete {
+  background: #fff5f5;
+}
+
+.action-btn .icon {
+  font-size: 28rpx;
+}
+
+.action-btn.delete .icon {
+  color: #ff4d4f;
+}
+
+/* 设为默认按钮 */
+.action-btn.default-btn {
+  width: auto;
+  padding: 0 20rpx;
+  border-radius: 24rpx;
+  background: #fff5f2;
+  color: #ff6b35;
+  font-size: 22rpx;
+  white-space: nowrap;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: #999;
+  margin-bottom: 16rpx;
+}
+
+.empty-tip {
+  font-size: 26rpx;
+  color: #bbb;
+  margin-top: 20rpx;
+}
+
+/* 底部按钮 */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.add-btn {
+  flex: 1;
+  height: 80rpx;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8f5a 100%);
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 30rpx;
+}
+
+.add-icon {
+  font-size: 36rpx;
+  margin-right: 12rpx;
+  font-weight: bold;
+}

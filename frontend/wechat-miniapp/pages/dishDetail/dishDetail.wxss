@@ -1,0 +1,286 @@
+page {
+  background: #f5f6fa;
+}
+
+.dish-detail-page {
+  min-height: 100vh;
+}
+
+/* 图片区域 */
+.dish-image-section {
+  position: relative;
+  width: 100%;
+  height: 500rpx;
+}
+
+.dish-image {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+}
+
+.back-btn {
+  position: absolute;
+  top: 40rpx;
+  left: 30rpx;
+  width: 70rpx;
+  height: 70rpx;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-icon {
+  color: #fff;
+  font-size: 36rpx;
+  margin-left: -4rpx;
+}
+
+/* 菜品信息 */
+.dish-info-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.dish-header {
+  margin-bottom: 20rpx;
+}
+
+.dish-name {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.dish-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.tag {
+  padding: 6rpx 16rpx;
+  background: #fff5f2;
+  color: #ff6b35;
+  font-size: 22rpx;
+  border-radius: 6rpx;
+}
+
+.dish-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.sales, .favor {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.divider {
+  margin: 0 20rpx;
+  color: #ddd;
+}
+
+.dish-desc {
+  padding: 20rpx;
+  background: #f9f9f9;
+  border-radius: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.dish-desc text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}
+
+.dish-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price-section {
+  display: flex;
+  align-items: baseline;
+}
+
+.price-symbol {
+  font-size: 28rpx;
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+.price-value {
+  font-size: 48rpx;
+  color: #ff6b35;
+  font-weight: bold;
+  margin: 0 8rpx;
+}
+
+.price-original {
+  font-size: 26rpx;
+  color: #999;
+  text-decoration: line-through;
+}
+
+/* 规格选择 */
+.specs-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+.spec-group {
+  margin-bottom: 30rpx;
+}
+
+.spec-group:last-child {
+  margin-bottom: 0;
+}
+
+.spec-label {
+  font-size: 28rpx;
+  color: #666;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.spec-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.spec-option {
+  padding: 16rpx 32rpx;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #666;
+  border: 2rpx solid transparent;
+}
+
+.spec-option.active {
+  background: #fff5f2;
+  color: #ff6b35;
+  border-color: #ff6b35;
+}
+
+/* 商品详情 */
+.detail-section {
+  background: #fff;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.detail-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.8;
+}
+
+.footer-placeholder {
+  height: 120rpx;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100rpx;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 30rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.cart-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.cart-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cart-icon::before {
+  content: '🛒';
+  font-size: 36rpx;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  background: #ff4d4f;
+  color: #fff;
+  font-size: 20rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8rpx;
+}
+
+.cart-price {
+  margin-left: 20rpx;
+}
+
+.cart-price .price-symbol {
+  font-size: 24rpx;
+}
+
+.cart-price .price-value {
+  font-size: 36rpx;
+}
+
+.action-btns {
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn-add-cart, .btn-buy {
+  padding: 20rpx 36rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  color: #fff;
+}
+
+.btn-add-cart {
+  background: linear-gradient(135deg, #ffa15a 0%, #ff8f5a 100%);
+}
+
+.btn-buy {
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8f5a 100%);
+}
+
+.btn-add-cart.disabled, .btn-buy.disabled {
+  background: #ccc;
+}

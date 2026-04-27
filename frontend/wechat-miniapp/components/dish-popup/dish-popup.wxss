@@ -1,0 +1,161 @@
+.dish-popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.dish-popup-mask.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dish-popup-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 40rpx;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.dish-popup-mask.show .dish-popup-content {
+  transform: translateY(0);
+}
+
+.popup-close {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.close-icon {
+  font-size: 48rpx;
+  color: #999;
+  line-height: 1;
+}
+
+.dish-image {
+  width: 100%;
+  height: 400rpx;
+  border-radius: 16rpx;
+  margin-bottom: 30rpx;
+  background: #f5f5f5;
+}
+
+.dish-info {
+  margin-bottom: 30rpx;
+}
+
+.dish-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.dish-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.dish-sales {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.dish-specs {
+  margin-bottom: 30rpx;
+}
+
+.spec-section {
+  margin-bottom: 24rpx;
+}
+
+.spec-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.spec-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.spec-option {
+  padding: 16rpx 32rpx;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.spec-option.active {
+  background: #fff5f2;
+  color: #ff6b35;
+  border: 2rpx solid #ff6b35;
+}
+
+.popup-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 30rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.price-section {
+  display: flex;
+  align-items: baseline;
+}
+
+.price-symbol {
+  font-size: 28rpx;
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+.price-value {
+  font-size: 48rpx;
+  color: #ff6b35;
+  font-weight: bold;
+}
+
+.add-btn {
+  padding: 24rpx 60rpx;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff8f5a 100%);
+  border-radius: 40rpx;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.add-btn.disabled {
+  background: #ccc;
+}

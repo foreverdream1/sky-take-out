@@ -1,0 +1,179 @@
+/* app.wxss - 全局样式 */
+page {
+  background-color: #f5f6fa;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: 28rpx;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* 通用卡片 */
+.card {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+/* 黄色主按钮 */
+.btn-primary {
+  background: #ffc200;
+  color: #333;
+  border: none;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 22rpx 0;
+  width: 100%;
+  text-align: center;
+}
+.btn-primary::after { border: none; }
+
+/* 灰色次按钮 */
+.btn-default {
+  background: #f5f6fa;
+  color: #666;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  padding: 16rpx 30rpx;
+}
+.btn-default::after { border: none; }
+
+/* 危险按钮 */
+.btn-danger {
+  background: #fff0f0;
+  color: #f56c6c;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  padding: 16rpx 30rpx;
+}
+.btn-danger::after { border: none; }
+
+/* 状态标签 */
+.tag {
+  display: inline-block;
+  padding: 6rpx 18rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+}
+.tag-green  { background: #e6f7ee; color: #52c41a; }
+.tag-red    { background: #fff0f0; color: #f56c6c; }
+.tag-yellow { background: #fffbf0; color: #ffc200; }
+.tag-gray   { background: #f5f6fa; color: #999; }
+
+/* 搜索栏 */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #f5f6fa;
+  border-radius: 40rpx;
+  padding: 14rpx 24rpx;
+  margin: 20rpx;
+}
+.search-bar input {
+  flex: 1;
+  font-size: 26rpx;
+  color: #333;
+  background: transparent;
+}
+.search-bar .icon-search {
+  width: 32rpx;
+  height: 32rpx;
+  margin-right: 12rpx;
+}
+
+/* 列表行 */
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 30rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f3f4f7;
+}
+.list-item:last-child { border-bottom: none; }
+
+/* 空状态 */
+.empty-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+  color: #aaa;
+  font-size: 26rpx;
+}
+.empty-box image {
+  width: 200rpx;
+  height: 160rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.5;
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background: #f3f4f7;
+  margin: 0 30rpx;
+}
+
+/* 页面标题 */
+.page-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #333;
+  padding: 30rpx 30rpx 10rpx;
+}
+
+/* 输入框 */
+.form-input {
+  border: none;
+  border-bottom: 1rpx solid #e9e9e8;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #333;
+  width: 100%;
+  background: transparent;
+}
+
+/* 弹窗遮罩 */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-box {
+  background: #fff;
+  border-radius: 16rpx;
+  width: 600rpx;
+  overflow: hidden;
+}
+.modal-header {
+  background: #fbfbfa;
+  padding: 28rpx 36rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+.modal-body { padding: 36rpx; }
+.modal-footer {
+  display: flex;
+  border-top: 1rpx solid #f3f4f7;
+}
+.modal-footer button {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+  font-size: 28rpx;
+  padding: 28rpx 0;
+  background: #fff;
+  color: #666;
+}
+.modal-footer button:last-child { color: #ffc200; font-weight: 600; }
+.modal-footer button::after { border: none; }

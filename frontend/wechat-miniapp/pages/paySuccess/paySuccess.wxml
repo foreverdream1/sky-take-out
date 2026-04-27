@@ -1,0 +1,32 @@
+<view class="pay-success-page">
+  <view class="success-section">
+    <view class="success-icon">✓</view>
+    <text class="success-title">支付成功</text>
+    <text class="success-amount">¥{{amount}}</text>
+    <text class="success-tip">商家已收到您的订单，将尽快为您配送</text>
+  </view>
+
+  <view class="order-info">
+    <view class="info-item">
+      <text class="label">订单编号</text>
+      <text class="value">{{orderId}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">支付方式</text>
+      <text class="value">微信支付</text>
+    </view>
+    <view class="info-item">
+      <text class="label">支付时间</text>
+      <text class="value">{{payTime}}</text>
+    </view>
+  </view>
+
+  <view class="action-buttons">
+    <view class="btn-primary" bindtap="viewOrder">
+      <text>查看订单</text>
+    </view>
+    <view class="btn-secondary" bindtap="backHome">
+      <text>返回首页</text>
+    </view>
+  </view>
+</view>

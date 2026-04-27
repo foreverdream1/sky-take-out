@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/order/order",
+    "pages/dish/dish",
+    "pages/setmeal/setmeal",
+    "pages/category/category",
+    "pages/staff/staff",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarTitleText": "瑞吉外卖",
+    "navigationBarBackgroundColor": "#343744",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f6fa"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#ffc200",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "工作台",
+        "iconPath": "assets/icons/home.png",
+        "selectedIconPath": "assets/icons/home_active.png"
+      },
+      {
+        "pagePath": "pages/order/order",
+        "text": "订单",
+        "iconPath": "assets/icons/order.png",
+        "selectedIconPath": "assets/icons/order_active.png"
+      },
+      {
+        "pagePath": "pages/dish/dish",
+        "text": "菜品",
+        "iconPath": "assets/icons/dish.png",
+        "selectedIconPath": "assets/icons/dish_active.png"
+      },
+      {
+        "pagePath": "pages/staff/staff",
+        "text": "员工",
+        "iconPath": "assets/icons/staff.png",
+        "selectedIconPath": "assets/icons/staff_active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "assets/icons/profile.png",
+        "selectedIconPath": "assets/icons/profile_active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

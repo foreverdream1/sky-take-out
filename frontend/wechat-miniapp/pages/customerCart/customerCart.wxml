@@ -1,0 +1,186 @@
+<view class="container">
+
+  <!-- 地址选择 -->
+  <view class="address-bar" bindtap="onSelectAddressTap">
+    <text class="addr-icon">📍</text>
+    <block wx:if="{{selectedAddress}}">
+      <view class="addr-content">
+        <view class="addr-row1">
+          <text class="addr-name">{{selectedAddress.consignee}}</text>
+          <text class="addr-phone">{{selectedAddress.phone}}</text>
+        </view>
+        <text class="addr-detail-text">{{selectedAddress.provinceName}}{{selectedAddress.cityName}}{{selectedAddress.districtName}}{{selectedAddress.detail}}</text>
+      </view>
+    </block>
+    <block wx:else>
+      <text class="addr-placeholder">请选择收货地址</text>
+    </block>
+    <text class="addr-arrow">›</text>
+  </view>
+
+  <!-- 配送时间 -->
+  <view class="delivery-section" bindtap="onSelectTimeTap">
+    <view class="delivery-left">
+      <text class="delivery-icon">⏰</text>
+      <view class="delivery-info">
+        <text class="delivery-label">送达时间</text>
+        <text class="delivery-value">{{deliveryTime}}</text>
+      </view>
+    </view>
+    <view class="delivery-arrow">
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 购物车商品 -->
+  <view class="cart-section">
+    <view class="section-header-bar">
+      <text class="section-header-title">商品明细</text>
+      <text class="clear-btn" bindtap="onClearCart">清空</text>
+    </view>
+
+    <view class="cart-list" wx:if="{{cartList.length > 0}}">
+      <view class="cart-item" wx:for="{{cartList}}" wx:key="id">
+        <image class="item-img" src="{{item.image || '/assets/images/default-food.png'}}" mode="aspectFill"/>
+        <view class="item-info">
+          <view class="item-name-row">
+            <text class="item-name">{{item.name}}</text>
+            <text class="item-type-badge {{item.setmealId ? 'setmeal' : 'dish'}}" wx:if="{{item.setmealId}}">套餐</text>
+          </view>
+          <view class="item-flavor-row" wx:if="{{item.dishFlavor}}">
+            <text class="item-flavor-tag">{{item.dishFlavor}}</text>
+          </view>
+          <view class="item-bottom">
+            <view class="item-price-area">
+              <text class="item-price-sym">¥</text>
+              <text class="item-price-num">{{item.amount}}</text>
+              <text class="item-subtotal" wx:if="{{item.number > 1}}">x{{item.number}}</text>
+            </view>
+            <view class="quantity-control">
+              <view class="qty-btn qty-minus" data-item="{{item}}" catchtap="onMinusTap">−</view>
+              <text class="qty-num">{{item.number}}</text>
+              <view class="qty-btn qty-plus" data-item="{{item}}" catchtap="onPlusTap">+</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-cart" wx:else>
+      <text class="empty-icon">🛒</text>
+      <text class="empty-text">购物车是空的</text>
+      <text class="empty-sub">快去选购心仪的美食吧~</text>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="remark-card">
+    <view class="remark-header">
+      <text class="remark-icon">📝</text>
+      <text class="remark-title">订单备注</text>
+    </view>
+    <input
+      class="remark-input"
+      placeholder="请输入备注（选填，如：少辣、忌口等）"
+      value="{{remark}}"
+      bindinput="onRemarkInput"
+    />
+  </view>
+
+  <!-- 价格明细 -->
+  <view class="price-detail-card">
+    <view class="price-row">
+      <text class="price-row-label">商品合计</text>
+      <text class="price-row-value">¥{{totalAmount}}</text>
+    </view>
+    <view class="price-row">
+      <text class="price-row-label">配送费</text>
+      <text class="delivery-fee">¥0</text>
+    </view>
+    <view class="price-divider"></view>
+    <view class="total-row">
+      <text class="total-label">实付金额</text>
+      <view class="total-price-area">
+        <text class="total-price-sym">¥</text>
+        <text class="total-price-num">{{totalAmount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部结算栏 -->
+  <view class="checkout-bar">
+    <view class="checkout-total">
+      <text class="checkout-total-label">合计</text>
+      <text class="checkout-total-price">¥{{totalAmount}}</text>
+    </view>
+    <view class="checkout-btn {{cartList.length === 0 ? 'disabled-btn' : ''}}" bindtap="onSubmitOrder">
+      <text>提交订单</text>
+    </view>
+  </view>
+
+  <!-- 地址选择弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddressModal}}" bindtap="closeAddressModal">
+    <view class="modal-content address-modal" catchtap="preventBubble">
+      <view class="modal-header">
+        <text class="modal-title">选择收货地址</text>
+        <view class="modal-close" bindtap="closeAddressModal">×</view>
+      </view>
+
+      <scroll-view class="address-list" scroll-y>
+        <view
+          class="address-item {{selectedAddress && selectedAddress.id === item.id ? 'selected' : ''}}"
+          wx:for="{{addressList}}"
+          wx:key="id"
+          data-address="{{item}}"
+          bindtap="onAddressSelect"
+        >
+          <view class="addr-item-main">
+            <view class="addr-item-row1">
+              <text class="addr-consignee">{{item.consignee}}</text>
+              <text class="addr-phone-text">{{item.phone}}</text>
+              <text class="addr-default-tag" wx:if="{{item.isDefault === 1}}">默认</text>
+            </view>
+            <text class="addr-item-detail">{{item.provinceName}}{{item.cityName}}{{item.districtName}}{{item.detail}}</text>
+          </view>
+          <view wx:if="{{selectedAddress && selectedAddress.id === item.id}}" class="addr-selected-check">✓</view>
+        </view>
+        <view class="no-address-tip" wx:if="{{addressList.length === 0}}">
+          暂无收货地址
+        </view>
+      </scroll-view>
+
+      <view class="modal-footer">
+        <view class="add-address-btn" bindtap="onManageAddress">
+          <text>+ 新增地址</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 配送时间弹窗 -->
+  <view class="modal-mask" wx:if="{{showTimeModal}}" bindtap="closeTimeModal">
+    <view class="modal-content time-modal" catchtap="preventBubble">
+      <view class="modal-header">
+        <text class="modal-title">选择送达时间</text>
+        <view class="modal-close" bindtap="closeTimeModal">×</view>
+      </view>
+
+      <view class="time-list">
+        <view
+          class="time-item {{deliveryTime === item ? 'selected' : ''}}"
+          wx:for="{{timeOptions}}"
+          wx:key="*this"
+          data-time="{{item}}"
+          bindtap="onTimeSelect"
+        >
+          <view class="time-item-content">
+            <text class="time-item-icon" wx:if="{{item === '立即送达'}}">⚡</text>
+            <text class="time-item-text">{{item}}</text>
+          </view>
+          <view class="time-item-check" wx:if="{{deliveryTime === item}}">✓</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>

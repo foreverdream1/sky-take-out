@@ -1,0 +1,9 @@
+<view class="loading-container">
+  <block wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">{{text || '加载中...'}}</text>
+  </block>
+  <block wx:elif="{{noMore}}">
+    <text class="no-more-text">{{noMoreText || '没有更多了'}}</text>
+  </block>
+</view>

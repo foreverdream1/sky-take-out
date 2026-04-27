@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "瑞吉外卖",
+  "navigationBarBackgroundColor": "#ff6b35",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "dish-popup": "/components/dish-popup/dish-popup",
+    "empty": "/components/empty/empty"
+  }
+}

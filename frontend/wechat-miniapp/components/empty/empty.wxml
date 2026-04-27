@@ -1,0 +1,5 @@
+<view class="empty-container">
+  <image class="empty-image" src="{{image || '/assets/icons/empty.png'}}" mode="aspectFit"/>
+  <text class="empty-text">{{text || '暂无数据'}}</text>
+  <slot></slot>
+</view>
